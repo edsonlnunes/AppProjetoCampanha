@@ -17,6 +17,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+
 import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado;
 
 public class MainActivity extends AppCompatActivity
@@ -35,6 +38,8 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         final DBHelper db = new DBHelper(this);
+
+
 
         //valida se o usuario saiu do app ou somente fechou
         SharedPreferences prefs = getSharedPreferences("meu_arquivo_de_preferencias", 0);
@@ -57,17 +62,6 @@ public class MainActivity extends AppCompatActivity
         txtNomeHeader = (TextView) findViewById(R.id.txtNomeHeader);
 
 
-//        if(usuarioLogado != null ){
-//            txtNomeHeader.setText(usuarioLogado.getNome());
-//            txtEmailHeader.setText(usuarioLogado.getEmail());
-//        }
-
-
-
-
-
-
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -77,6 +71,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
     }
+
 
     @Override
     public void onBackPressed() {
@@ -119,6 +114,8 @@ public class MainActivity extends AppCompatActivity
             if(getIntent().getBooleanExtra("SAIR", false)){
                 finish();
             }
+
+            LoginManager.getInstance().logOut();
 
         }
 
