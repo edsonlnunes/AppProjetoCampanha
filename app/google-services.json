@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "175636166732",
+    "firebase_url": "https://projeto-solidariedade.firebaseio.com",
+    "project_id": "projeto-solidariedade",
+    "storage_bucket": "projeto-solidariedade.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:175636166732:android:48a73acba04f0c88",
+        "android_client_info": {
+          "package_name": "com.example.edson.appprojetocampanha"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "175636166732-5gj0rpnsh1eqlulhd38kg363375fnmdl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.edson.appprojetocampanha",
+            "certificate_hash": "086f31efa0a1a9bf273d9bf66e2baa1b0fa01994"
+          }
+        },
+        {
+          "client_id": "175636166732-itpfkftefpb3fenet290mmeteeutn176.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2mAmg9589H83Ui3Dj3MjB-aU8VOT18fY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "175636166732-itpfkftefpb3fenet290mmeteeutn176.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
