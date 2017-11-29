@@ -8,8 +8,13 @@
             android:title="Alterar Dados" />
         <item
             android:id="@+id/confAfinidades"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_menu_send"
             android:title="Afinidades" />
+
+        <item
+            android:id="@+id/confDoacoes"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Doações" />
 
     </group>
 

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 
 import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado;
 
@@ -115,8 +116,8 @@ public class MainActivity extends AppCompatActivity
                 finish();
             }
 
+            FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
-
         }
 
         return super.onOptionsItemSelected(item);
@@ -135,6 +136,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.confAfinidades) {
             Intent afinidades = new Intent(this, AfinidadesActivity.class);
             startActivity(afinidades);
+        } else if (id == R.id.confDoacoes) {
+            Intent doacoes = new Intent(this, DoacoesActivity.class);
+            startActivity(doacoes);
         }
 
 

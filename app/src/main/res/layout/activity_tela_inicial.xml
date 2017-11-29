@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/telaini"
     tools:context="com.example.edson.appprojetocampanha.TelaInicialActivity"
-    android:padding="10dp">
+    android:padding="10dp"
+    android:orientation="vertical">
 
 
     <GridLayout

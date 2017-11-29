@@ -92,7 +92,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
 
                 // se o campo senha não estiver vazio ele atualiza.
                 if(!senha.equals(""))
-                    usuarioLogado.setSenha(senha);;
+                    usuarioLogado.setSenha(senha);
 
 
 

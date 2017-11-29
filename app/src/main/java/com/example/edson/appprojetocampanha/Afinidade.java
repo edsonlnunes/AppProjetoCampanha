@@ -8,6 +8,7 @@ public class Afinidade {
 
     private String id;
     private String afinidade_nome;
+    private String usuarioID;
 
     public String getId() {
         return id;
@@ -23,5 +24,13 @@ public class Afinidade {
 
     public void setAfinidade_nome(String afinidade_nome) {
         this.afinidade_nome = afinidade_nome;
+    }
+
+    public String getUsuarioID() {
+        return usuarioID;
+    }
+
+    public void setUsuarioID(String usuarioID) {
+        this.usuarioID = usuarioID;
     }
 }

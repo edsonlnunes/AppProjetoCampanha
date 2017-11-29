@@ -36,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         sql = "CREATE TABLE USUARIO(ID TEXT PRIMARY KEY, NOME TEXT, EMAIL TEXT, CPF TEXT, SENHA TEXT);";
 
-        sql +="CREATE TABLE AFINIDADE(ID TEXT PRIMARY KEY, AFINIDADE_NOME TEXT);";
+        sql +="CREATE TABLE AFINIDADE(ID TEXT PRIMARY KEY, AFINIDADE_NOME TEXT, USUARIOID TEXT);";
 
 
         String[] comando = sql.split(";");
@@ -141,6 +141,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         values.put("ID", afinidade.getId());
         values.put("AFINIDADE_NOME", afinidade.getAfinidade_nome());
+        values.put("USUARIOID", afinidade.getUsuarioID());
 
         db.insert("AFINIDADE", null, values);
 
@@ -148,13 +149,13 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public ArrayList<String> retornaAfinidades(){
+    public ArrayList<String> retornaAfinidades(String usuarioID){
         ArrayList<String> afinidades = new ArrayList<String>();
         SQLiteDatabase db = this.getReadableDatabase();
 
 
 
-        String query = "SELECT * FROM AFINIDADE";
+        String query = "SELECT * FROM AFINIDADE WHERE USUARIOID = '" + usuarioID + "';";
 
         Cursor cursor = db.rawQuery(query, null);
 
@@ -174,10 +175,10 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
 
-    public void deleteAfinidade(String afinidade){
+    public void deleteAfinidade(String afinidade, String usuarioID){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        db.delete("AFINIDADE", "AFINIDADE_NOME = ?", new String[] {afinidade});
+        db.delete("AFINIDADE", "AFINIDADE_NOME = ? AND USUARIOID = ?", new String[] {afinidade, usuarioID});
 
         db.close();
     }

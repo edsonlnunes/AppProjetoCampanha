@@ -1,8 +1,11 @@
 package com.example.edson.appprojetocampanha;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -35,18 +38,31 @@ import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado
 
 public class LoginActivity extends AppCompatActivity {
 
+    // botão para entrar no sistema
     private Button btnEntrar;
+
+    // manipulação do e-mail e senha quando digitado
     private EditText txtLoginEmail;
     private EditText txtLoginSenha;
-    private Button btnFacebook;
+
+    // manipulação do e-mail e das senhas quando for recuperar ela.
+    private EditText txtRecuperaUsername;
+    private EditText txtRecuperaPassword;
+    private EditText txtRecuperaConfirmePassword;
+
+    // parte do login do facebook
     private LoginButton loginButton;
     private CallbackManager callbackManager;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    // serve para abrir o AlertDialog para alterar de senha.
+    private TextView lblEsqueciSenha;
 
     private static final String TAG = "Login";
 
 
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +72,76 @@ public class LoginActivity extends AppCompatActivity {
         btnEntrar = (Button) findViewById(R.id.btnEntrar);
         txtLoginEmail = (EditText) findViewById(R.id.txtLoginEmail);
         txtLoginSenha = (EditText) findViewById(R.id.txtLoginSenha);
-       //btnFacebook = (Button) findViewById(R.id.btnFacebook);
+        txtRecuperaUsername = (EditText) findViewById(R.id.txtRecuperaUsername);
+        txtRecuperaPassword = (EditText) findViewById(R.id.txtRecuperaPassword);
+        txtRecuperaConfirmePassword = (EditText) findViewById(R.id.txtRecuperaConfirmePassword);
+        lblEsqueciSenha = (TextView) findViewById(R.id.lblEsqueciSenha);
+
+        // estancia o banco
+        final DBHelper db = new DBHelper(this);
+
+        // parte do esqueci a senha
+        lblEsqueciSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
+
+                builder.setView(inflater.inflate(R.layout.recuperar_senha, null))
+                        .setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Usuario usuario = new Usuario();
+                                String email = txtRecuperaUsername.getText().toString();
+                                String senha = txtRecuperaPassword.getText().toString();
+                                String confirmaSenha = txtRecuperaConfirmePassword.getText().toString();
+
+                                if(!Validacao.validaEmail(email)){
+                                    txtRecuperaUsername.setError("Digite um e-mail válido.");
+                                    txtRecuperaUsername.requestFocus();
+                                    return;
+                                }
+                                if(validaSenha(senha)){
+                                    if(!Validacao.validaSenha(senha)) {
+                                        txtRecuperaPassword.setError("Tamanho minimo da senha : 6 Digitos");
+                                        txtRecuperaPassword.requestFocus();
+                                        return;
+                                    } else if(!confirmaSenha.equals(senha)){
+                                        txtRecuperaConfirmePassword.setError("Campos Confirma senha e Senha precisam ser iguais.");
+                                        txtRecuperaConfirmePassword.requestFocus();
+                                        return;
+                                    }
+                                }
+
+                                usuario.setEmail(email);
+
+                                if(!senha.equals(""))
+                                    usuario.setSenha(senha);
+
+
+                                try {
+                                    db.atualizaUsuario(usuario);
+                                    SharedPreferences prefs = getSharedPreferences("meu_arquivo_de_preferencias", 0);
+                                    SharedPreferences.Editor editor = prefs.edit();
+                                    editor.putString("email", email);
+                                    editor.commit();
+                                    Toast.makeText(LoginActivity.this, "Alteração realizada com sucesso.", Toast.LENGTH_LONG).show();
+                                    finish();
+                                } catch (Exception ex){
+                                    Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
 
 
 
@@ -98,11 +183,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-        Usuario usuario = new Usuario();
-        final DBHelper db = new DBHelper(this);
-
-
-
+        // parte de entrar no app quando digitado o e-mail e a senha.
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -191,9 +272,6 @@ public class LoginActivity extends AppCompatActivity {
                             Usuario usuario = null;
                             final DBHelper db = new DBHelper(LoginActivity.this);
 
-
-
-
                             try{
                                 usuario = db.retornaUsuarioPorEmail(user.getEmail().toString());
                             } catch (Exception ex){
@@ -236,5 +314,8 @@ public class LoginActivity extends AppCompatActivity {
                 });
     }
 
+    public static boolean validaSenha(String senha){
+        return (!Validacao.validaCampoVazio(senha));
+    }
 
 }

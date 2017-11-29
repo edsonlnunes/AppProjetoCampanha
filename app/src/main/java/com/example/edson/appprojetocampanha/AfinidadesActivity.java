@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado;
+
 public class AfinidadesActivity extends AppCompatActivity {
 
     private Spinner spinnerAfinidade;
@@ -59,7 +61,7 @@ public class AfinidadesActivity extends AppCompatActivity {
         // carrega as afinidades escolhidas do banco de dados
         ArrayList<String> arrayAfinidades = null;
         try {
-            arrayAfinidades = db.retornaAfinidades();
+            arrayAfinidades = db.retornaAfinidades(usuarioLogado.getId());
         } catch (Exception ex) {
             Toast.makeText(AfinidadesActivity.this, "Erro no carregar a lista", Toast.LENGTH_LONG).show();
         }
@@ -88,6 +90,7 @@ public class AfinidadesActivity extends AppCompatActivity {
                     if (!validaAfinidade) {
                         afinidade.setId(UUID.randomUUID().toString());
                         afinidade.setAfinidade_nome(afinidadeEscolhida);
+                        afinidade.setUsuarioID(usuarioLogado.getId());
                         db.insertAfinidade(afinidade);
                         afinidadesEscolhidas.add(afinidadeEscolhida);
                     } else {
@@ -123,7 +126,7 @@ public class AfinidadesActivity extends AppCompatActivity {
                 String item = afinidadesEscolhidas.getItem(info.position);
 
                 try {
-                    db.deleteAfinidade(item);
+                    db.deleteAfinidade(item, usuarioLogado.getId());
                     afinidadesEscolhidas.remove(item);
                 } catch (Exception ex){
                     Toast.makeText(AfinidadesActivity.this, "Algo deu errado, tente novamente", Toast.LENGTH_LONG).show();
