@@ -10,6 +10,6 @@ public class DoacoesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doacoes);
 
-        String teste = "teste";
+        String teste = "teste tese";
     }
 }
