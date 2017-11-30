@@ -60,7 +60,7 @@ public class CriarContaActivity extends AppCompatActivity {
                     txtCadastroCPF.requestFocus();
                     return;
                 } else if(!Validacao.validaTelefone(telefone)) {
-                    txtCadastroTelefone.setError("Digite um Telefone válido. ((DD) XXXXX-XXXX)");
+                    txtCadastroTelefone.setError("Digite um Telefone válido. Formato: (DD) XXXXX-XXXX");
                     txtCadastroTelefone.requestFocus();
                     return;
                 } else if(!Validacao.validaSenha(senha)){
@@ -102,7 +102,4 @@ public class CriarContaActivity extends AppCompatActivity {
         });
     }
 
-    private void validaCampos(){
-
-    }
 }

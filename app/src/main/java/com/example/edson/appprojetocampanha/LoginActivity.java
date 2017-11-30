@@ -467,11 +467,10 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
 
     protected boolean sendSMSMessage(Usuario usuario) {
         Log.i("Send SMS", "");
-        String telefone = "(51) 99131-6769";
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage(telefone, null, "Sua nova senha é: " + usuario.getSenha(), null, null);
+            smsManager.sendTextMessage(usuario.getTelefone(), null, "Sua nova senha é: " + usuario.getSenha(), null, null);
             Toast.makeText(getApplicationContext(), "SMS enviado..", Toast.LENGTH_LONG).show();
             return true;
         } catch (Exception e) {

@@ -75,7 +75,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
                     txtCPFAltDados.requestFocus();
                     return;
                 } else  if(!Validacao.validaTelefone(telefone)){
-                    txtTelefoneAltDados.setError("Digite um Telefone válido. ((DD) XXXXX-XXXX)");
+                    txtTelefoneAltDados.setError("Digite um Telefone válido. Formato: (DD) XXXXX-XXXX");
                     txtTelefoneAltDados.requestFocus();
                     return;
                 }
