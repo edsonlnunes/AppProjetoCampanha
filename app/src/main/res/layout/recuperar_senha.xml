@@ -30,31 +30,4 @@
         android:textColor="@android:color/black"
         android:inputType="textEmailAddress" />
 
-    <EditText
-        android:id="@+id/txtRecuperaPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif"
-        android:hint="Digite sua senha."
-        android:textColor="@android:color/black"
-        android:inputType="textPassword" />
-
-    <EditText
-        android:id="@+id/txtRecuperaConfirmePassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-        android:fontFamily="sans-serif"
-        android:hint="Repita sua senha novamente."
-        android:textColor="@android:color/black"
-        android:inputType="textPassword"
-        android:layout_weight="0.32" />
-
 </LinearLayout>

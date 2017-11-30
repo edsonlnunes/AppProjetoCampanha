@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         String sql;
 
-        sql = "CREATE TABLE USUARIO(ID TEXT PRIMARY KEY, NOME TEXT, EMAIL TEXT, CPF TEXT, SENHA TEXT);";
+        sql = "CREATE TABLE USUARIO(ID TEXT PRIMARY KEY, NOME TEXT, EMAIL TEXT, TELEFONE TEXT, CPF TEXT, SENHA TEXT);";
 
         sql +="CREATE TABLE AFINIDADE(ID TEXT PRIMARY KEY, AFINIDADE_NOME TEXT, USUARIOID TEXT);";
 
@@ -66,6 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
             values.put("ID", usuario.getId());
             values.put("NOME", usuario.getNome());
             values.put("EMAIL", usuario.getEmail());
+            values.put("TELEFONE", usuario.getTelefone());
             values.put("CPF", usuario.getCpf());
             values.put("SENHA", usuario.getSenha());
 
@@ -107,6 +108,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 usuario.setId(cursor.getString(cursor.getColumnIndex("ID")));
                 usuario.setNome(cursor.getString(cursor.getColumnIndex("NOME")));
                 usuario.setEmail(cursor.getString(cursor.getColumnIndex("EMAIL")));
+                usuario.setTelefone(cursor.getString(cursor.getColumnIndex("TELEFONE")));
                 usuario.setCpf(cursor.getString(cursor.getColumnIndex("CPF")));
                 usuario.setSenha(cursor.getString(cursor.getColumnIndex("SENHA")));
             }
@@ -118,16 +120,15 @@ public class DBHelper extends SQLiteOpenHelper {
     public void atualizaUsuario(Usuario usuario){
         SQLiteDatabase db = this.getWritableDatabase();
 
-
-
-        String query = "UPDATE USUARIO SET NOME = '" + usuario.getNome() + "', EMAIL = '" + usuario.getEmail() + "', CPF = '" + usuario.getCpf() + "' WHERE ID = '" +
-                usuario.getId() + "';";
+        String query = "UPDATE USUARIO SET NOME = '" + usuario.getNome() + "', EMAIL = '" + usuario.getEmail() + "', TELEFONE = '" + usuario.getTelefone() +
+                "', CPF = '" + usuario.getCpf() + "' WHERE ID = '" + usuario.getId() + "';";
 
         ContentValues values = new ContentValues();
 
 
         values.put("NOME", usuario.getNome());
         values.put("EMAIL", usuario.getEmail());
+        values.put("TELEFONE", usuario.getTelefone());
         values.put("CPF", usuario.getCpf());
         values.put("SENHA", usuario.getSenha());
 

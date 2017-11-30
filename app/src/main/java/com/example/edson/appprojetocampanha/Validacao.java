@@ -69,8 +69,12 @@ public class Validacao {
                 CPF.substring(6, 9) + "-" + CPF.substring(9, 11));
     }
 
+    public static boolean validaTelefone(String numeroTelefone) {
+        /*return (!validaCampoVazio(numeroTelefone) && numeroTelefone.matches(".((10)|([1-9][1-9]).)\\s9?[6-9][0-9]{3}-[0-9]{4}")
+                || numeroTelefone.matches(".((10)|([1-9][1-9]).)\\s[2-5][0-9]{3}-[0-9]{4}"));*/
 
-
+        return !validaCampoVazio(numeroTelefone);
+    }
 
     public static boolean validaCampoVazio(String valor) {
         return (TextUtils.isEmpty(valor) || valor.trim().isEmpty());

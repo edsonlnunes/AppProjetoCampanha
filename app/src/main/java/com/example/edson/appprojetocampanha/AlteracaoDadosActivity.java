@@ -16,6 +16,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
     private EditText txtEmailAltDados;
     private EditText txtSenhaAltDados;
     private EditText txtConfirmaSenhaAltDados;
+    private EditText txtTelefoneAltDados;
     private EditText txtCPFAltDados;
     private Button btnSalvarAltDados;
 
@@ -27,6 +28,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
         txtNomeAltDados = (EditText) findViewById(R.id.txtNomeAltDados);
         txtEmailAltDados = (EditText) findViewById(R.id.txtEmailAltDados);
         txtCPFAltDados = (EditText) findViewById(R.id.txtCPFAltDados);
+        txtTelefoneAltDados = (EditText) findViewById(R.id.txtTelefoneAltDados);
         txtSenhaAltDados = (EditText) findViewById(R.id.txtSenhaAltDados);
         txtConfirmaSenhaAltDados = (EditText) findViewById(R.id.txtConfirmaSenhaAltDados);
         btnSalvarAltDados = (Button) findViewById(R.id.btnSalvarAltDados);
@@ -35,6 +37,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
         txtNomeAltDados.setText(usuarioLogado.getNome());
         txtEmailAltDados.setText(usuarioLogado.getEmail());
         txtCPFAltDados.setText(usuarioLogado.getCpf());
+        txtTelefoneAltDados.setText(usuarioLogado.getTelefone());
 
         txtEmailAltDados.setEnabled(false);
 
@@ -42,6 +45,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
         final String emailAntesSalvar = usuarioLogado.getEmail();
         final String senhaAntesSalvar = usuarioLogado.getSenha();
         final String cpfAntesSalvar = usuarioLogado.getCpf();
+        final String telefoneAntesSalvar = usuarioLogado.getTelefone();
 
 
         final DBHelper db = new DBHelper(this);
@@ -53,6 +57,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
                 String nome = txtNomeAltDados.getText().toString();
                 String email = txtEmailAltDados.getText().toString();
                 String cpf = txtCPFAltDados.getText().toString();
+                String telefone = txtTelefoneAltDados.getText().toString();
                 String senha = txtSenhaAltDados.getText().toString();
                 String confirmaSenha = txtConfirmaSenhaAltDados.getText().toString();
 
@@ -69,12 +74,17 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
                     txtCPFAltDados.setError("Digite um CPF válido.");
                     txtCPFAltDados.requestFocus();
                     return;
+                } else  if(!Validacao.validaTelefone(telefone)){
+                    txtTelefoneAltDados.setError("Digite um Telefone válido. ((DD) XXXXX-XXXX)");
+                    txtTelefoneAltDados.requestFocus();
+                    return;
                 }
 
 
                 usuarioLogado.setNome(nome);
                 usuarioLogado.setEmail(email);
                 usuarioLogado.setCpf(cpf);
+                usuarioLogado.setTelefone(telefone);
 
                 // valida para ver se o campo está vazio ou não
                 if(validaSenha(senha)){
@@ -108,6 +118,7 @@ public class AlteracaoDadosActivity extends AppCompatActivity {
                     usuarioLogado.setNome(nomeAntesSalvar);
                     usuarioLogado.setEmail(emailAntesSalvar);
                     usuarioLogado.setCpf(cpfAntesSalvar);
+                    usuarioLogado.setTelefone(telefoneAntesSalvar);
                     usuarioLogado.setSenha(senhaAntesSalvar);
                     Toast.makeText(AlteracaoDadosActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
                 }

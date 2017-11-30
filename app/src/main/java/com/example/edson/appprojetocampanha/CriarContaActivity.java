@@ -16,6 +16,7 @@ public class CriarContaActivity extends AppCompatActivity {
     private EditText txtCadastroNome;
     private EditText txtCadastroCPF;
     private EditText txtCadastroEmail;
+    private EditText txtCadastroTelefone;
     private EditText txtCadastroSenha;
     private EditText txtCadastroConfirmaSenha;
 
@@ -28,6 +29,7 @@ public class CriarContaActivity extends AppCompatActivity {
         txtCadastroNome = (EditText) findViewById(R.id.txtCadastroNome);
         txtCadastroCPF = (EditText) findViewById(R.id.txtCadastroCPF);
         txtCadastroEmail = (EditText) findViewById(R.id.txtCadastroEmail);
+        txtCadastroTelefone = (EditText) findViewById(R.id.txtCadastroTelefone);
         txtCadastroSenha = (EditText) findViewById(R.id.txtCadastroSenha);
         txtCadastroConfirmaSenha = (EditText) findViewById(R.id.txtCadastroConfirmaSenha);
 
@@ -41,6 +43,7 @@ public class CriarContaActivity extends AppCompatActivity {
                 String nome = txtCadastroNome.getText().toString();
                 String email = txtCadastroEmail.getText().toString();
                 String cpf = txtCadastroCPF.getText().toString();
+                String telefone = txtCadastroTelefone.getText().toString();
                 String senha = txtCadastroSenha.getText().toString();
                 String confirmaSenha = txtCadastroConfirmaSenha.getText().toString();
 
@@ -55,6 +58,10 @@ public class CriarContaActivity extends AppCompatActivity {
                 } else if(!Validacao.validaCPF(cpf)){
                     txtCadastroCPF.setError("Digite um CPF válido.");
                     txtCadastroCPF.requestFocus();
+                    return;
+                } else if(!Validacao.validaTelefone(telefone)) {
+                    txtCadastroTelefone.setError("Digite um Telefone válido. ((DD) XXXXX-XXXX)");
+                    txtCadastroTelefone.requestFocus();
                     return;
                 } else if(!Validacao.validaSenha(senha)){
                     txtCadastroSenha.setError("Tamanho minimo da senha : 6 Digitos");
@@ -71,6 +78,7 @@ public class CriarContaActivity extends AppCompatActivity {
                 usuario.setNome(nome);
                 usuario.setCpf(cpf);
                 usuario.setEmail(email);
+                usuario.setTelefone(telefone);
                 usuario.setSenha(senha);
 
 
