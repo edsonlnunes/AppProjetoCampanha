@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/qrcode"
+        android:icon="@drawable/qrcode"
+        android:orderInCategory="103"
+        android:title="QR Code"
+        app:showAsAction="always" />
     <item
         android:id="@+id/sair"
-        android:orderInCategory="100"
-        android:title="Sair"
+        android:orderInCategory="104"
+        android:title="@string/sair"
         app:showAsAction="never" />
+
+
 </menu>

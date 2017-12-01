@@ -16,10 +16,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.concurrent.ExecutionException;
 
 import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado;
 
@@ -59,8 +62,8 @@ public class MainActivity extends AppCompatActivity
 
 
 
-        txtEmailHeader = (TextView) findViewById(R.id.txtEmailHeader);
-        txtNomeHeader = (TextView) findViewById(R.id.txtNomeHeader);
+
+
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -88,6 +91,13 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        txtEmailHeader = (TextView) findViewById(R.id.txtEmailHeader);
+        txtNomeHeader = (TextView) findViewById(R.id.txtNomeHeader);
+
+        if(usuarioLogado != null) {
+            txtEmailHeader.setText(usuarioLogado.getEmail());
+            txtNomeHeader.setText(usuarioLogado.getNome());
+        }
         return true;
     }
 
@@ -112,12 +122,15 @@ public class MainActivity extends AppCompatActivity
             it.putExtra("SAIR", true);
             startActivity(it);
 
+
             if(getIntent().getBooleanExtra("SAIR", false)){
                 finish();
             }
 
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
+        }else if(id == R.id.qrcode){
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -128,6 +141,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+
 
         if (id == R.id.altDados) {
             Intent alteraDados = new Intent(this, AlteracaoDadosActivity.class);

@@ -79,10 +79,6 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
         final DBHelper db = new DBHelper(this);
 
 
-
-
-
-
         // parte do esqueci a senha
         /*lblEsqueciSenha.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,9 +172,6 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
         });
 
 
-
-
-
         // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
@@ -188,7 +181,6 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
                 FirebaseUser user = firebaseAuth.getCurrentUser();
             }
         };
-
 
 
         // Initialize Facebook Login button
@@ -216,7 +208,6 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
         });
 
 
-
         // parte de entrar no app quando digitado o e-mail e a senha.
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,26 +217,25 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
                 String email = txtLoginEmail.getText().toString();
                 String senha = txtLoginSenha.getText().toString();
 
-                if(!Validacao.validaEmail(email)) {
+                if (!Validacao.validaEmail(email)) {
                     txtLoginEmail.setError("Digite um e-mail válido.");
                     txtLoginEmail.requestFocus();
                     return;
-                } else if(!Validacao.validaSenha(senha)) {
+                } else if (!Validacao.validaSenha(senha)) {
                     txtLoginSenha.setError("Tamanho minimo da senha : 6 Digitos");
                     txtLoginSenha.requestFocus();
                     return;
                 }
 
 
-
-                try{
+                try {
                     usuario = db.retornaUsuarioPorEmail(email);
-                } catch (Exception ex){
+                } catch (Exception ex) {
                     Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
                 }
 
 
-                if(usuario != null) {
+                if (usuario != null) {
                     if (usuario.getSenha().equals(txtLoginSenha.getText().toString())) {
                         SharedPreferences prefs = getSharedPreferences("meu_arquivo_de_preferencias", 0);
                         SharedPreferences.Editor editor = prefs.edit();
@@ -262,7 +252,7 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
                     } else {
                         Toast.makeText(LoginActivity.this, "Email ou senha incorreto.", Toast.LENGTH_LONG).show();
                     }
-                } else{
+                } else {
                     Toast.makeText(LoginActivity.this, "Não existe cadastro com o e-mail informado, favor informar um correto.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -306,22 +296,22 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
                             Usuario usuario = null;
                             final DBHelper db = new DBHelper(LoginActivity.this);
 
-                            try{
+                            try {
                                 usuario = db.retornaUsuarioPorEmail(user.getEmail().toString());
-                            } catch (Exception ex){
+                            } catch (Exception ex) {
                                 Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
                             }
 
-                            try{
-                                if(usuario == null) {
-                                usuario = new Usuario();
-                                usuario.setEmail(user.getEmail());
-                                usuario.setId(user.getUid());
-                                usuario.setNome(user.getDisplayName());
-                                db.insertUsuario(usuario);
-                                Toast.makeText(LoginActivity.this, "Salvo com sucesso!!", Toast.LENGTH_LONG).show();
+                            try {
+                                if (usuario == null) {
+                                    usuario = new Usuario();
+                                    usuario.setEmail(user.getEmail());
+                                    usuario.setId(user.getUid());
+                                    usuario.setNome(user.getDisplayName());
+                                    db.insertUsuario(usuario);
+                                    Toast.makeText(LoginActivity.this, "Salvo com sucesso!!", Toast.LENGTH_LONG).show();
                                 }
-                            } catch (Exception ex){
+                            } catch (Exception ex) {
                                 ex.printStackTrace();
                                 Toast.makeText(LoginActivity.this, "Não foi possível realizar o seu cadastro, por favor tente novamente!!", Toast.LENGTH_LONG).show();
                             }
@@ -421,7 +411,7 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
     @Override
     public void onClick(View v) {
         DBHelper db = new DBHelper(this);
-        if(v.getId()==DialogInterface.BUTTON_POSITIVE){
+        if (v.getId() == DialogInterface.BUTTON_POSITIVE) {
             txtRecuperaUsername = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaUsername);
 
             Usuario usuario = new Usuario();
@@ -436,37 +426,40 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
 
             usuario.setEmail(email);
 
-            try{
+            try {
                 usuario = db.retornaUsuarioPorEmail(email);
-            } catch (Exception ex){
+            } catch (Exception ex) {
                 Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
             }
 
 
-
-            if(usuario != null) {
-                usuario.setSenha("ftecfaculdades");
-                try {
-
-                    //sendSMSMessage(usuario);
-                    if(sendSMSMessage(usuario)){
-                        db.atualizaUsuario(usuario);
-                        Toast.makeText(LoginActivity.this, "Alteração realizada com sucesso.", Toast.LENGTH_LONG).show();
-                        //Este é o evento responsável por fechar o dialog.
-                        dialog.dismiss();
+            if (usuario != null) {
+                if(usuario.getTelefone() != null && !usuario.getTelefone().equals("")) {
+                    usuario.setSenha("ftecfaculdades");
+                    try {
+                        if (sendSMSMessage(usuario)) {
+                            db.atualizaUsuario(usuario);
+                            Toast.makeText(LoginActivity.this, "Alteração realizada com sucesso.", Toast.LENGTH_LONG).show();
+                            //Este é o evento responsável por fechar o dialog.
+                            dialog.dismiss();
+                        }
+                    } catch (Exception ex) {
+                        Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
                     }
-                } catch (Exception ex) {
-                    Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getApplicationContext(),
+                            "Seu cadastro não possui telefone cadastrado. Entre no nosso site para recuperar a senha",
+                            Toast.LENGTH_LONG).show();
                 }
             } else {
                 Toast.makeText(LoginActivity.this, "Não existe cadastro com o e-mail informado, favor informar um correto.", Toast.LENGTH_LONG).show();
             }
-
         }
     }
 
     protected boolean sendSMSMessage(Usuario usuario) {
         Log.i("Send SMS", "");
+
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
@@ -478,7 +471,9 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
             e.printStackTrace();
             return false;
         }
+
     }
+
 
 
     public static boolean validaSenha(String senha){
