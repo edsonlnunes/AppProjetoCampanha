@@ -11,10 +11,6 @@
             android:icon="@drawable/ic_menu_send"
             android:title="Afinidades" />
 
-        <item
-            android:id="@+id/confDoacoes"
-            android:icon="@drawable/ic_menu_share"
-            android:title="Doações" />
 
     </group>
 

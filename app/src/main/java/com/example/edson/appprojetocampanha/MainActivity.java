@@ -1,10 +1,13 @@
 package com.example.edson.appprojetocampanha;
 
+
+import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -21,6 +24,8 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import java.util.concurrent.ExecutionException;
 
@@ -29,10 +34,10 @@ import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-
     private TextView txtNomeHeader;
     private TextView txtEmailHeader;
+
+    private TextView txtEvento;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,14 +48,12 @@ public class MainActivity extends AppCompatActivity
 
         final DBHelper db = new DBHelper(this);
 
+        txtEvento = (TextView) findViewById(R.id.txtEvento);
 
 
         //valida se o usuario saiu do app ou somente fechou
         SharedPreferences prefs = getSharedPreferences("meu_arquivo_de_preferencias", 0);
         boolean jaLogou = prefs.getBoolean("estaLogado", false);
-
-
-
 
         //se usuario somente fechou ele não entra no IF se o usuário saiu do app ele entra no if
         if(!jaLogou) {
@@ -59,12 +62,6 @@ public class MainActivity extends AppCompatActivity
         } else {
             usuarioLogado = db.retornaUsuarioPorEmail(prefs.getString("email", ""));
         }
-
-
-
-
-
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -91,6 +88,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        // Preenche o nome e o e-mail do usuário no drawer.
         txtEmailHeader = (TextView) findViewById(R.id.txtEmailHeader);
         txtNomeHeader = (TextView) findViewById(R.id.txtNomeHeader);
 
@@ -122,7 +120,6 @@ public class MainActivity extends AppCompatActivity
             it.putExtra("SAIR", true);
             startActivity(it);
 
-
             if(getIntent().getBooleanExtra("SAIR", false)){
                 finish();
             }
@@ -130,10 +127,33 @@ public class MainActivity extends AppCompatActivity
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
         }else if(id == R.id.qrcode){
+            // QR code
+            IntentIntegrator integrator = new IntentIntegrator(this);
 
+            integrator.addExtra("SCAN_WIDTH", 200);
+            integrator.addExtra("SCAN_HEIGHT", 200);
+            integrator.addExtra("SCAN_MODE", "QR_CODE_MODE,PRODUCT_MODE");
+            //Mensagem enquanto scanea
+            integrator.addExtra("PROMPT_MESSAGE", "Lendo o QRCode!");
+            integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+
+        if(result != null){
+            if(result.getContents() != null){
+                txtEvento.setText(result.getContents());
+            } else {
+                Toast.makeText(getApplicationContext(), "Scan cancelado", Toast.LENGTH_LONG).show();
+            }
+        } else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -150,9 +170,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.confAfinidades) {
             Intent afinidades = new Intent(this, AfinidadesActivity.class);
             startActivity(afinidades);
-        } else if (id == R.id.confDoacoes) {
-            Intent doacoes = new Intent(this, DoacoesActivity.class);
-            startActivity(doacoes);
         }
 
 

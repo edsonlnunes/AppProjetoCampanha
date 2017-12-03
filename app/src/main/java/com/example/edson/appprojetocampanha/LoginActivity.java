@@ -78,80 +78,6 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
         // estancia o banco
         final DBHelper db = new DBHelper(this);
 
-
-        // parte do esqueci a senha
-        /*lblEsqueciSenha.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                LayoutInflater inflater = LoginActivity.this.getLayoutInflater();
-
-
-                    builder.setView(inflater.inflate(R.layout.recuperar_senha, null))
-                            .setCancelable(false)
-                            .setPositiveButton("Salvar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    txtRecuperaUsername = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaUsername);
-                                    txtRecuperaPassword = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaPassword);
-                                    txtRecuperaConfirmePassword = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaConfirmePassword);
-                                    try {
-                                        Usuario usuario = new Usuario();
-                                        String email = txtRecuperaUsername.getText().toString();
-                                        String senha = txtRecuperaPassword.getText().toString();
-                                        String confirmaSenha = txtRecuperaConfirmePassword.getText().toString();
-
-                                        if (!Validacao.validaEmail(email)) {
-                                            txtRecuperaUsername.setError("Digite um e-mail válido.");
-                                            txtRecuperaUsername.requestFocus();
-
-                                        }
-                                        if (validaSenha(senha)) {
-                                            if (!Validacao.validaSenha(senha)) {
-                                                txtRecuperaPassword.setError("Tamanho minimo da senha : 6 Digitos");
-                                                txtRecuperaPassword.requestFocus();
-                                                return;
-                                            } else if (!confirmaSenha.equals(senha)) {
-                                                txtRecuperaConfirmePassword.setError("Campos Confirma senha e Senha precisam ser iguais.");
-                                                txtRecuperaConfirmePassword.requestFocus();
-                                                return;
-                                            }
-                                        }
-
-                                        usuario.setEmail(email);
-
-                                        if (!senha.equals(""))
-                                            usuario.setSenha(senha);
-
-
-                                        try {
-                                            db.atualizaUsuario(usuario);
-                                            SharedPreferences prefs = getSharedPreferences("meu_arquivo_de_preferencias", 0);
-                                            SharedPreferences.Editor editor = prefs.edit();
-                                            editor.putString("email", email);
-                                            editor.commit();
-                                            Toast.makeText(LoginActivity.this, "Alteração realizada com sucesso.", Toast.LENGTH_LONG).show();
-                                            finish();
-                                        } catch (Exception ex) {
-                                            Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
-                                        }
-                                    }catch (Exception e){
-                                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
-                                }
-                            })
-                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-
-                                }
-                            });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-            }
-        });*/
-
-
         lblEsqueciSenha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -346,68 +272,7 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
         b.setOnClickListener(this);
     }
 
-    /*//Metodo da interface onClickListener
-    @Override
-    public void onClick(View v) {
-        //Verificamos se é o botão.
-        //Aqui é aonde deve ser feita verificação necessária.
-        DBHelper db = new DBHelper(this);
-        if(v.getId()==DialogInterface.BUTTON_POSITIVE){
-            txtRecuperaUsername = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaUsername);
-            txtRecuperaPassword = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaPassword);
-            txtRecuperaConfirmePassword = (EditText) ((Dialog) dialog).findViewById(R.id.txtRecuperaConfirmePassword);
-
-            Usuario usuario = new Usuario();
-            String email = txtRecuperaUsername.getText().toString();
-            String senha = txtRecuperaPassword.getText().toString();
-            String confirmaSenha = txtRecuperaConfirmePassword.getText().toString();
-
-            if (!Validacao.validaEmail(email)) {
-                txtRecuperaUsername.setError("Digite um e-mail válido.");
-                txtRecuperaUsername.requestFocus();
-                return;
-            }
-            if (validaSenha(senha)) {
-                if (!Validacao.validaSenha(senha)) {
-                    txtRecuperaPassword.setError("Tamanho minimo da senha : 6 Digitos");
-                    txtRecuperaPassword.requestFocus();
-                    return;
-                } else if (!confirmaSenha.equals(senha)) {
-                    txtRecuperaConfirmePassword.setError("Campos Confirma senha e Senha precisam ser iguais.");
-                    txtRecuperaConfirmePassword.requestFocus();
-                    return;
-                }
-            }
-
-            usuario.setEmail(email);
-
-            try{
-                usuario = db.retornaUsuarioPorEmail(email);
-            } catch (Exception ex){
-                Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
-            }
-
-            if (!senha.equals(""))
-                usuario.setSenha(senha);
-
-
-
-
-            if(usuario != null) {
-                try {
-                    db.atualizaUsuario(usuario);
-                    Toast.makeText(LoginActivity.this, "Alteração realizada com sucesso.", Toast.LENGTH_LONG).show();
-                    //Este é o evento responsável por fechar o dialog.
-                    dialog.dismiss();
-                } catch (Exception ex) {
-                    Toast.makeText(LoginActivity.this, "Algo deu errado, tente novamente.", Toast.LENGTH_LONG).show();
-                }
-            } else {
-                Toast.makeText(LoginActivity.this, "Não existe cadastro com o e-mail informado, favor informar um correto.", Toast.LENGTH_LONG).show();
-            }
-        }
-    }*/
-
+    //parte de recuperar a senha
     @Override
     public void onClick(View v) {
         DBHelper db = new DBHelper(this);
@@ -457,9 +322,9 @@ public class LoginActivity extends AppCompatActivity implements DialogInterface.
         }
     }
 
+    // manda sms
     protected boolean sendSMSMessage(Usuario usuario) {
         Log.i("Send SMS", "");
-
 
         try {
             SmsManager smsManager = SmsManager.getDefault();
