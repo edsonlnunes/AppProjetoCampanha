@@ -83,11 +83,6 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.View
 
         try {
             Glide.with(ctx).load(card.getImagem()).into(holder.imagem);
-            /*
-            URL url = new URL(card.getImagem());
-            Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-            holder.imagem.setImageBitmap(bmp);
-            */
         } catch (Exception ex) {
             ex.printStackTrace();
         }
