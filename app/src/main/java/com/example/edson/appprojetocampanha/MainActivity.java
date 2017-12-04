@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity
     private TextView txtNomeHeader;
     private TextView txtEmailHeader;
 
-    private TextView txtEvento;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity
 
         final DBHelper db = new DBHelper(this);
 
-        txtEvento = (TextView) findViewById(R.id.txtEvento);
+
 
 
         //valida se o usuario saiu do app ou somente fechou
@@ -127,41 +127,21 @@ public class MainActivity extends AppCompatActivity
             FirebaseAuth.getInstance().signOut();
             LoginManager.getInstance().logOut();
         }else if(id == R.id.qrcode){
-            // QR code
-            IntentIntegrator integrator = new IntentIntegrator(this);
+            Intent eventoAcao = new Intent(MainActivity.this, EventoActivity.class);
+            startActivity(eventoAcao);
 
-            integrator.addExtra("SCAN_WIDTH", 200);
-            integrator.addExtra("SCAN_HEIGHT", 200);
-            integrator.addExtra("SCAN_MODE", "QR_CODE_MODE,PRODUCT_MODE");
-            //Mensagem enquanto scanea
-            integrator.addExtra("PROMPT_MESSAGE", "Lendo o QRCode!");
-            integrator.initiateScan(IntentIntegrator.QR_CODE_TYPES);
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
 
-        if(result != null){
-            if(result.getContents() != null){
-                txtEvento.setText(result.getContents());
-            } else {
-                Toast.makeText(getApplicationContext(), "Scan cancelado", Toast.LENGTH_LONG).show();
-            }
-        } else{
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
 
         if (id == R.id.altDados) {
             Intent alteraDados = new Intent(this, AlteracaoDadosActivity.class);
