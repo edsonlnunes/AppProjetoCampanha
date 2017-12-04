@@ -73,7 +73,8 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".EventoActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".DoacaoActivity"></activity>
     </application>
 
 </manifest>

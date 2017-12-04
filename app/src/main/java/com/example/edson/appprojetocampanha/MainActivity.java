@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
 import android.view.KeyEvent;
 import android.view.View;
@@ -18,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import static com.example.edson.appprojetocampanha.VariavelsGlobal.usuarioLogado;
@@ -36,6 +40,12 @@ public class MainActivity extends AppCompatActivity
 
     private TextView txtNomeHeader;
     private TextView txtEmailHeader;
+
+    // parte dos cards
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Button btnParticipar;
 
 
 
@@ -48,7 +58,20 @@ public class MainActivity extends AppCompatActivity
 
         final DBHelper db = new DBHelper(this);
 
+        // Parte dos cards
+        mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        btnParticipar = (Button) findViewById(R.id.btnParticipar);
+        mRecyclerView.setHasFixedSize(true);
 
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // carrega a lista com o conteúdo
+        ArrayList<CartaoCampanha> myDataset = new Dashboard(this).PegaTodos();
+
+        // specify an adapter (see also next example)
+        mAdapter = new DashboardAdapter(this, myDataset);
+        mRecyclerView.setAdapter(mAdapter);
 
 
         //valida se o usuario saiu do app ou somente fechou
@@ -71,6 +94,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
 

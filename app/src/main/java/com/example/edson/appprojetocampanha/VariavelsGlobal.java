@@ -9,6 +9,6 @@ import android.app.Application;
 public class VariavelsGlobal {
 
     public static Usuario usuarioLogado;
-
+    public static CartaoCampanha Campanha;
 
 }
